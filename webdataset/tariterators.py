@@ -166,9 +166,11 @@ def group_by_keys(data, keys=base_plus_ext, lcase=True, suffixes=None, handler=N
                 yield current_sample
             current_sample = dict(__key__=prefix, __url__=filesample["__url__"])
         if suffix in current_sample:
-            raise ValueError(
-                f"{fname}: duplicate file name in tar file {suffix} {current_sample.keys()}"
-            )
+            # Q: why did they make it crash the entire run instead of just ignoring a single problematic file??
+            print(f"Warning: {fname}: duplicate file name in tar file {suffix} {current_sample.keys()}")
+            #raise ValueError(
+            #    f"{fname}: duplicate file name in tar file {suffix} {current_sample.keys()}"
+            #)
         if suffixes is None or suffix in suffixes:
             current_sample[suffix] = value
     if valid_sample(current_sample):
